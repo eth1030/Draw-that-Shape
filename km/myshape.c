@@ -178,13 +178,13 @@ static void myshape_exit(void) {
 // user reads kernel writes
 static ssize_t my_read(struct file *filp, char *buf, size_t count, loff_t *f_pos) {
 	int read_len = 0;
-	if (*f_pos > 0 || !READY_FOR_USER) {
+	if (!READY_FOR_USER) {
 		return 0;
 	}
 	// alert user prog to write detection results to char dev
 	memset(shape_buf, 0, BUF_SIZE);
 	read_len += sprintf(shape_buf, "r");
-	*f_pos += read_len;
+	// *f_pos += read_len;
 	return read_len;
 }
 
