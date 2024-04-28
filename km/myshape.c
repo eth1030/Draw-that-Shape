@@ -28,6 +28,9 @@ MODULE_AUTHOR("Shamir Legaspi <slegaspi@bu.edu>");
 #define TARGET2 46
 #define BUTTON 65
 
+#define OFF 0
+#define ON 1
+
 
 /* global variables */
 struct gpio_desc *green_desc, *red_desc, *target0_desc, *target1_desc, *target2_desc, *BT_desc;
