@@ -1,6 +1,7 @@
 #include "opencv2/objdetect.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
+#include "opencv2/highgui.hpp"
 #include <iostream>
 #include <unistd.h>
 using namespace std;
@@ -62,13 +63,24 @@ while ( capture.read(frame) )
 		std::vector<Rect> rectangles;
 		rectangle_cascade.detectMultiScale(frame_gray, rectangles);
 
+		// display
+		for ( size_t i = 0; i < circles.size(); i++ ) {
+			Point center( circles[i].x + circles[i].width/2, circles[i].y + circles[i].height/2 );
+			ellipse( frame, center, Size( circles[i].width/2, circles[i].height/2 ), 0, 0, 360, Scalar( 255, 0, 255 ), 4 );
+		}
 		// output what was detected
 		cout << "Triangles: " << triangles.size() << "\n";
 		cout << "Circles: " << circles.size() << "\n";
 		cout << "Rectangles: " << rectangles.size() << "\n";
+		
+	    imshow( "circle detection", frame );
+		if( waitKey(10) == 27 )
+		 {
+		 break; // escape
+		 }
+		
 	}
 
-sleep(1);
 return 0;
 
 }
