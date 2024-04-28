@@ -24,25 +24,25 @@ char buf[BUF_SIZE];
 int main( int argc, const char** argv )
 {
 	// open char dev for write
-	fd = open("/dev/mytimer", O_RDWR| O_TRUNC);
+	int fd = open("/dev/myshape", O_RDWR| O_TRUNC);
     if (fd == -1) {
-		char *print = "character device not loaded\n";
+		const char *print = "character device not loaded\n";
 		write(STDERR_FILENO, print, strlen(print));
         return -1;
     }
 
 // load classifiers
-if( !triangle_cascade.load("../training_data/triangle_cascade/cascade.xml") )
+if( !triangle_cascade.load("/home/debian/Draw-that-Shape/training_data/triangle_cascade/cascade.xml") )
 	{
 		cout << "error loading triangle cascade\n";
 		return -1;
 	};
-if( !rectangle_cascade.load("../training_data/rectangle_cascade/cascade.xml") )
+if( !rectangle_cascade.load("/home/debian/Draw-that-Shape/training_data/rectangle_cascade/cascade.xml") )
 	{
 		cout << "error loading rectangle cascade\n";
 		return -1;
 	};
-if( !circle_cascade.load("../training_data/circle_cascade/cascade.xml") )
+if( !circle_cascade.load("/home/debian/Draw-that-Shape/training_data/circle_cascade/cascade.xml") )
 	{
 		cout << "error loading circle cascade\n";
 		return -1;
@@ -51,7 +51,6 @@ if( !circle_cascade.load("../training_data/circle_cascade/cascade.xml") )
 // read video stream
 VideoCapture capture;
 capture.open(0);
-
 if ( ! capture.isOpened() )
 	{
 		cout << "error opening video capture\n";
@@ -62,6 +61,7 @@ Mat frame;
 while (1)
 	{
 		if (!read(fd, buf, BUF_SIZE)) continue;
+		capture.read(frame);
 		if( frame.empty() )
 		{
 			cout << "no captured frame\n";
@@ -102,11 +102,11 @@ while (1)
 
 		int count = 0;		
 		int ret;
-		int max_num = max(triangles.size(), circles.size());
-		max_num = max(max_num, rectangles,size());
+		int max_num = max((int)triangles.size(), (int)circles.size());
+		max_num = max(max_num, (int)rectangles.size());
 		// write to char dev
 		memset(buf, 0, BUF_SIZE);
-		if (circle.size() == max_num) {
+		if (circles.size() == max_num) {
 			count++;
 			ret =  CIRCLE;
 		}
