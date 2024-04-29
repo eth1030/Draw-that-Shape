@@ -1,0 +1,11 @@
+[Unit]
+Description=My Shape
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/run_shape.sh
+
+[Install]
+WantedBy=multi-user.target
+
