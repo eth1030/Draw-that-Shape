@@ -45,6 +45,7 @@ sudo systemctl enable shape.service
 Reboot BBB
 
 ## Circuit Diagram
+![732F116A-7606-4AE5-A4CF-58EC9677B7B3_1_201_a](https://github.com/eth1030/Draw-that-Shape/assets/98787002/60a3cf91-d365-4bee-a45e-6dd15d38a7e3)
 
 ## How to Play
 To start the game, the player pushes the push button, and has 10 seconds to draw a shape denoted by the blue LEDs. The number corresponds to the following shapes:
