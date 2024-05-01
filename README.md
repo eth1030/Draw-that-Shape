@@ -4,6 +4,8 @@
 ## Description
 This game runs on a BeagleBone Black (BBB) running Debian GNU/Linux 11 (bullseye) and requires extra peripherals such as a usb webcam, LEDs, and pushbutton.
 
+## [Final Video](https://youtu.be/FPcHXyPLIwY)
+
 ## Installation
 Update package manager and install OpenCV
 ```
