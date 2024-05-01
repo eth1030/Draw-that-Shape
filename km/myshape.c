@@ -71,6 +71,7 @@ int rand3(void) {
 	return i%3;
 }
 
+// Generates random value and sets indicator LEDs accordingly, starts a timer for user to draw
 static irq_handler_t BT_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
 	shape = rand3();
 	gpiod_set_value(red_desc, OFF);
@@ -97,10 +98,12 @@ static irq_handler_t BT_irq_handler(unsigned int irq, void *dev_id, struct pt_re
 	return (irq_handler_t) IRQ_HANDLED;
 }
 
+// Sets flag to true to modify device file read behavior
 void mytimer_callback(struct timer_list* timer) {
 	READY_FOR_USER = TRUE;
 }
 
+// Sets up GPIO, irq, character device, and timer
 static int myshape_init(void) {
 	gpio_request(GREEN, "green");
 	gpio_request(RED, "red");
@@ -162,7 +165,7 @@ static int myshape_init(void) {
 }
 
 
-
+// Undoes setup done in init
 static void myshape_exit(void) {
 	gpiod_put(green_desc);
 	gpiod_put(red_desc);
@@ -175,7 +178,7 @@ static void myshape_exit(void) {
 	unregister_chrdev(MAJOR_NUM, "myshape");
 }
 
-// user reads kernel writes
+// user reads kernel writes, returns non-zero value when kernel is ready for user input
 static ssize_t my_read(struct file *filp, char *buf, size_t count, loff_t *f_pos) {
 	int read_len = 0;
 	if (!READY_FOR_USER) {
@@ -188,6 +191,7 @@ static ssize_t my_read(struct file *filp, char *buf, size_t count, loff_t *f_pos
 	return read_len;
 }
 
+// user write kernel reads, upon receipt of input checks if user was correct and lights LEDs and no longer ready for user
 static ssize_t my_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos) {
 	int classified_shape;
 	if (copy_from_user(shape_buf, buf, count)) {
